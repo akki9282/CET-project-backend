@@ -58,15 +58,20 @@ public class UserController {
 	@GetMapping("/colleges")
 	public ResponseEntity<List<CollegeListDTO>> getCollegeList(
 	        @RequestParam("percentage") String percentage,
+	        @RequestParam(name="ranking", required = false, defaultValue = "") String ranking,
 	        @RequestParam("category") String category,
 	        @RequestParam("gender") String gender,
+	        @RequestParam("capRound") int capRound,
 	        @RequestParam(value = "collegeName", required = false, defaultValue = "") List<String> collegeName,
 			@RequestParam(value = "city", required = false, defaultValue = "") List<String> city,
 			@RequestParam(value = "type", required = false, defaultValue = "") List<String> type,
 			@RequestParam(value = "branch", required = false, defaultValue = "") List<String> branch){
 		
+//		int rank=ranking.isEmpty()?(Integer)null:Integer.parseInt(ranking);
+		String rank=(ranking.isEmpty()||ranking.isBlank()||ranking.equals("0"))?null:ranking;
+		
 		double per=Double.parseDouble(percentage);
-		UserDetailDTO userDetailDTO=new UserDetailDTO(per,category,gender);
+		UserDetailDTO userDetailDTO=new UserDetailDTO(per,rank,category,gender,capRound);
 		
 		List<CollegeListDTO> list = userService.getCollegeList(userDetailDTO);
 

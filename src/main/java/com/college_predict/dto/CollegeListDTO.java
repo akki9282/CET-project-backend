@@ -25,4 +25,5 @@ public class CollegeListDTO {
 	private int ranking;
 	private BigDecimal percentage;
 	private String category_name;
+	private int cap_round;
 }

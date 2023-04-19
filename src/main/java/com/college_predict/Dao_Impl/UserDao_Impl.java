@@ -34,23 +34,25 @@ public class UserDao_Impl implements UserDao {
 			if(userDetailDTO.getGender().equalsIgnoreCase("female")) {
 			 query = "select c.college_id AS college_ID,c.college_name AS college_name,c.city AS city,\n"
 					+ "c.college_type AS type,b.branch_id AS branch_ID,b.branch_name AS branch_name,\n"
-					+ "p.stage AS stage,p.ranking AS ranking,p.percentage AS percentage,p.category_name AS category_name\n"
-					+ "from percentage as p inner join branch as b on p.branch_ID=b.branch_ID\n"
+					+ "p.stage AS stage,p.ranking AS ranking,p.percentage AS percentage,p.category_name AS category_name,\n"
+					+ "p.cap_round AS cap_round from percentage as p inner join branch as b on p.branch_ID=b.branch_ID\n"
 					+ "inner join college as c on b.college_ID=c.college_ID\n"
-					+ "where p.percentage<="
+					+ "where (p.percentage<="
 					+ userDetailDTO.getPercentage()
-					+ " and p.category_name like '%"+userDetailDTO.getCategory() +"%';";
+					+ " OR p.ranking>="+userDetailDTO.getRanking()+" ) and p.category_name like '%"+userDetailDTO.getCategory() +"%'"
+					+ " and p.cap_round="+userDetailDTO.getCapRound()+";";
 			}
 			else {
 				 query = "select c.college_id AS college_ID,c.college_name AS college_name,c.city AS city,\n"
 							+ "c.college_type AS type,b.branch_id AS branch_ID,b.branch_name AS branch_name,\n"
-							+ "p.stage AS stage,p.ranking AS ranking,p.percentage AS percentage,p.category_name AS category_name\n"
-							+ "from percentage as p inner join branch as b on p.branch_ID=b.branch_ID\n"
+							+ "p.stage AS stage,p.ranking AS ranking,p.percentage AS percentage,p.category_name AS category_name,\n"
+							+ "p.cap_round as cap_round from percentage as p inner join branch as b on p.branch_ID=b.branch_ID\n"
 							+ "inner join college as c on b.college_ID=c.college_ID\n"
-							+ "where p.percentage<="
+							+ "where (p.percentage<="
 							+ userDetailDTO.getPercentage()
-							+ " and p.category_name like '%"+userDetailDTO.getCategory() +"%'\n"
-							+ "and p.category_name not like 'L%';";
+							+ " OR p.ranking>="+userDetailDTO.getRanking()+") and p.category_name like '%"+userDetailDTO.getCategory() +"%'\n"
+							+ "and p.category_name not like 'L%'"
+							+ "and p.cap_round="+userDetailDTO.getCapRound()+";";
 			}
 			
 			NativeQuery<CollegeListDTO> q = session.createNativeQuery(query);

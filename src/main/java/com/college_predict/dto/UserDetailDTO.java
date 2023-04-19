@@ -17,10 +17,15 @@ public class UserDetailDTO {
 	@Max(value = 100,message = "Percentage Should Be Less Than 100")
 	@NotNull
 	double percentage;
+	String ranking;
 //	@Min(value = 1,message = "Rank Should Be Greater Than 1")
 //	long rank;
 	@NotBlank(message = "Category Should Not Be Blank")
 	String category;
     @Pattern(regexp="^(?i)(male|female)$", message="Gender should be either 'male' or 'female'")
 	String gender;
+    
+    int capRound;
+    
+    
 }
